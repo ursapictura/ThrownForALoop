@@ -37,9 +37,9 @@ List<Product> products = new List<Product>()
     {
         Name = "Camp Hammock",
         Price = 58.75M,
-        Sold = false,
+        Sold = true,
         Color = "Safety Orange",
-        StockDate = new DateTime(2024, 3, 4),
+        StockDate = new DateTime(2024, 5, 4),
         ManufactureYear = 2023,
         Condition = 4.5
     },
@@ -49,7 +49,7 @@ List<Product> products = new List<Product>()
         Price = 100.00M,
         Sold = false,
         Color = "Cherry Red",
-        StockDate = new DateTime(2023, 7, 25),
+        StockDate = new DateTime(2024, 6, 25),
         ManufactureYear = 2021,
         Condition = 4.1
     },
@@ -77,7 +77,8 @@ while (choice != "0")
     Console.WriteLine(@"Choose an option:
                         0. Exit
                         1. View All Products
-                        2. View Product Details");
+                        2. View Product Details
+                        3. View Latest Products");
     choice = Console.ReadLine();
     if (choice == "0")
     {
@@ -91,12 +92,16 @@ while (choice != "0")
     {
         ViewProductDetails();
     }
+    else if (choice == "3")
+    {
+        ViewLatestProducts();
+    }
 }
 
 // VIEW AND SELECT PRODUCT DETAILS
 void ViewProductDetails()
 {
-    ListProducts(); 
+    ListProducts();
 
     Product chosenProduct = null;
 
@@ -148,5 +153,27 @@ void ListProducts()
     for (int i = 0; i < products.Count; i++)
     {
         Console.WriteLine($"{i + 1}. {products[i].Name}");
+    }
+}
+
+void ViewLatestProducts()
+{
+    // create a new empty List to store the latest products
+    List<Product> latestProducts = new List<Product>();
+    // Calculate a DateTime 90 days in the past
+    DateTime threeMonthsAgo = DateTime.Now - TimeSpan.FromDays(90);
+    //loop through the products
+    foreach (Product product in products)
+    {
+        //Add a product to latestProducts if it fits the criteria
+        if (product.StockDate > threeMonthsAgo && !product.Sold)
+        {
+            latestProducts.Add(product);
+        }
+    }
+    // print out the latest products to the console 
+    for (int i = 0; i < latestProducts.Count; i++)
+    {
+        Console.WriteLine($"{i + 1}. {latestProducts[i].Name}");
     }
 }
